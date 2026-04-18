@@ -4,26 +4,23 @@ function Convert-ICICIFormat {
         [System.IO.FileInfo]$File
     )
 
-    # Step 1: Convert XLS → XLSX if needed
-    $workingFile = Convert-XlsToXlsx -File $File
+    # Step 1: MOP (Mode of Payment)
+    $mop = Get-MOPFromFileName -FileName $File.Name
 
-    # Step 2: Get MOP
-    $mop = Get-MOPFromFileName -FileName $workingFile.Name
+    # Step 2: Read raw Excel
+    $raw = Import-Excel $File.FullName -NoHeader
 
-    # Step 3: Read raw Excel
-    $raw = Import-Excel $workingFile.FullName -NoHeader
-
-    # Step 4: Detect header row
+    # Step 3: Detect header row
     $headerIndex = Get-ICICIHeader -RawData $raw
 
     if ($null -eq $headerIndex) {
         throw "Header not found in $($File.Name)"
     }
 
-    # Step 5: Extract header row
+    # Step 4: Extract header row
     $headerRow = $raw[$headerIndex].PSObject.Properties.Value
 
-    # Step 6: Build column map (ROBUST)
+    # Step 5: Build column map (robust detection)
     $colMap = @{}
 
     for ($i = 0; $i -lt $headerRow.Count; $i++) {
@@ -35,12 +32,12 @@ function Convert-ICICIFormat {
         elseif ($val -match "Reference")    { $colMap.Ref = $i }
     }
 
-    # Step 7: Validate mapping
+    # Validate mapping
     if ($colMap.Count -lt 4) {
         throw "Column mapping incomplete. Found: $($colMap.Keys -join ', ')"
     }
 
-    # Step 8: Extract data rows
+    # Step 6: Extract data rows
     $data = $raw[($headerIndex + 2)..($raw.Count - 1)]
 
     $prevDate = $null
@@ -54,7 +51,7 @@ function Convert-ICICIFormat {
         $amount  = $values[$colMap.Amount]
         $ref     = $values[$colMap.Ref]
 
-        # Handle merged/blank date rows
+        # Handle merged / blank date rows
         if (-not $date) {
             $date = $prevDate
         } else {
