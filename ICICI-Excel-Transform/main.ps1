@@ -5,14 +5,13 @@ param(
     [string]$OutputFolder
 )
 
-# 🔹 Setup module path FIRST
-$modulePath = Join-Path $PSScriptRoot "Modules"
+# 🔹 Resolve module path dynamically
+$basePath = Split-Path $PSScriptRoot -Parent
+$modulePath = Join-Path $basePath "Modules"
+
 $env:PSModulePath = "$modulePath;$env:PSModulePath"
 
-# Add module path (temporary)
-$env:PSModulePath += ";C:\Projects\Automation\Modules"
-
-# 🔹 Import modules BEFORE logging
+# 🔹 Import modules
 Import-Module PCXLab.Core -Force
 Import-Module PCXLab.Excel -Force
 
