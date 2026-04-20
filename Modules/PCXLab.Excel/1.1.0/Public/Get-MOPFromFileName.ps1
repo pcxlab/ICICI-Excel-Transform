@@ -1,23 +1,31 @@
 function Get-MOPFromFileName {
+
     param([string]$FileName)
 
+    $name = $FileName.ToUpper()
+
     # Bank
-    if ($FileName -match "ICICI") { $bank = "ICICI" }
-    elseif ($FileName -match "HDFC") { $bank = "HDFC" }
-    else { $bank = "UNK" }
+    switch -Regex ($name) {
+        "ICICI" { $bank = "ICICI"; break }
+        "HDFC"  { $bank = "HDFC"; break }
+        default { $bank = "UNK" }
+    }
 
     # Type
-    if ($FileName -match "CC") { $type = "CC" }
-    elseif ($FileName -match "SB") { $type = "SB" }
-    else { $type = "OT" }
+    switch -Regex ($name) {
+        "_CC_" { $type = "CC"; break }
+        "_SB_" { $type = "SB"; break }
+        default { $type = "OT" }
+    }
 
-    # Initials (e.g., _HP_)
-    if ($FileName -match "_([A-Z]{2})_") {
+    # Initials
+    if ($name -match "^[A-Z]+_[A-Z]+_([A-Z]{2})_") {
         $initials = $matches[1]
     }
     else {
         $initials = "NA"
     }
 
-    return "$bank-$type-$initials"
+    # 🔥 CHANGED HERE → underscore instead of dash
+    return "${bank}_${type}_${initials}"
 }
