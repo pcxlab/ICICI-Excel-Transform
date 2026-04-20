@@ -68,11 +68,23 @@ foreach ($file in $files) {
         switch ($bank) {
 
             "ICICI" {
-                $result = Convert-ICICIFormat -File $workingFile
+
+                if ($file.Name -match "_DC_") {
+                    $result = Convert-ICICIDCFormat -File $workingFile
+                }
+                else {
+                    $result = Convert-ICICIFormat -File $workingFile
+                }
             }
 
             "HDFC" {
-                $result = Convert-HDFCFormat -File $workingFile
+
+                if ($file.Name -match "_DC_") {
+                    $result = Convert-HDFCDCFormat -File $workingFile
+                }
+                else {
+                    $result = Convert-HDFCFormat -File $workingFile
+                }
             }
 
             default {

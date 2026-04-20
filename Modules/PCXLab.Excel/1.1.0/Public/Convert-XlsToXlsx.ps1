@@ -18,7 +18,7 @@ function Convert-XlsToXlsx {
         return Get-Item $newFile
     }
 
-    Write-Host "Converting XLS → XLSX: $($File.Name)" -ForegroundColor Yellow
+    Write-Host "Converting XLS -> XLSX: $($File.Name)" -ForegroundColor Yellow
 
     $excel = New-Object -ComObject Excel.Application
     $excel.Visible = $false
