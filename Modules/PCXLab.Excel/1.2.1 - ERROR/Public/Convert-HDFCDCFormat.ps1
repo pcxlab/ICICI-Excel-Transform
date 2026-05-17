@@ -85,9 +85,9 @@ function Convert-HDFCDCFormat {
             For            = ""
             MOP            = $mop
             "Amt (Dr)"     = $amtDr
-            "Chq./Ref.No." = $ref
-            "Value Dt"     = ""
             "Amt (Cr)"     = $amtCr
+            "Value Dt"     = ""
+            "Chq./Ref.No." = $ref
         }
     }
 }

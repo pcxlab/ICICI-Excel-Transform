@@ -90,9 +90,9 @@ function Convert-ICICIDCFormat {
             For            = ""
             MOP            = $mop
             "Amt (Dr)"     = $amtDr
-            "Chq./Ref.No." = $ref
-            "Value Dt"     = $date   # ✅ actual value date
             "Amt (Cr)"     = $amtCr
+            "Value Dt"     = $date   # ✅ actual value date
+            "Chq./Ref.No." = $ref
         }
     }
 }

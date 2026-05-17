@@ -90,9 +90,9 @@ function Convert-HDFCFormat {
             For            = ""
             MOP            = $mop
             "Amt (Dr)"     = $amtDr
-            "Chq./Ref.No." = $ref
-            "Value Dt"     = if ($amtDr -gt 0) { "Dr." } elseif ($amtCr -gt 0) { "Cr." };
             "Amt (Cr)"     = $amtCr
+            "Value Dt"     = if ($amtDr -gt 0) { "Dr." } elseif ($amtCr -gt 0) { "Cr." };
+            "Chq./Ref.No." = $ref
         }
     }
 }
